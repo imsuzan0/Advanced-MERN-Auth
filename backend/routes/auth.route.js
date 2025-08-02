@@ -6,10 +6,13 @@ import {
   resetPassword,
   signup,
   verifyEmail,
+  checkAuth
 } from "../controllers/auth.controller.js";
+import { protectRoute } from "../middleware/protectRoute.js";
 
 const authRoute = express.Router();
 
+authRoute.get("/check-auth", protectRoute, checkAuth);
 authRoute.post("/signup", signup);
 authRoute.post("/login", login);
 authRoute.post("/logout", logout);

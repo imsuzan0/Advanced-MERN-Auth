@@ -192,3 +192,23 @@ export const resetPassword = async (req, res) => {
       .json({ success: false, message: "Internal server error" });
   }
 };
+
+export const checkAuth = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    return res.status(200).json({
+      success: true,
+      user: {
+        ...user._doc,
+      },
+    });
+  } catch (error) {
+    console.error("Check auth error:", error);
+    return res
+      .status(500)
+      .json({ success: false, message: "Internal server error" });
+  }
+};
